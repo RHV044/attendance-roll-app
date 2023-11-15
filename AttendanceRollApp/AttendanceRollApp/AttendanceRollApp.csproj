@@ -64,4 +64,8 @@
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0-rc.2.23479.6" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\AttendanceRollApp.WebUI\AttendanceRollApp.WebUI.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -2,12 +2,13 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:AttendanceRollApp"
+             xmlns:WebUI="clr-namespace:AttendanceRollApp.WebUI;assembly=AttendanceRollApp.WebUI"
              x:Class="AttendanceRollApp.MainPage"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
 
     <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
         <BlazorWebView.RootComponents>
-            <RootComponent Selector="#app" ComponentType="{x:Type local:Routes}" />
+            <RootComponent Selector="#app" ComponentType="{x:Type WebUI:Routes}" />
         </BlazorWebView.RootComponents>
     </BlazorWebView>
 

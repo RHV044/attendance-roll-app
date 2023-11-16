@@ -1,5 +1,18 @@
 ﻿@page "/"
+@using AttendanceRollApp.WebUI.Models
+@using AttendanceRollApp.WebUI.Services.Interfaces
+@inject IFingerprintService FingerprintService
 
-<h1>Hello, world!</h1>
+<h1>¡Hola!</h1>
 
-Welcome to your new app.
+Escaneá tu huella para registrar tu asistencia.
+
+@fingerPrint?.Hash
+
+@code {
+    private FingerprintData? fingerPrint;
+    protected override async Task OnInitializedAsync()
+    {
+        fingerPrint = await FingerprintService.Scan();
+    }
+}

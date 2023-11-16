@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AttendanceRollApp.Services;
+using AttendanceRollApp.WebUI.Services.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace AttendanceRollApp
 {
@@ -15,6 +17,7 @@ namespace AttendanceRollApp
                 });
 
             builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddTransient<FingerprintService>();
 
 #if DEBUG
     		builder.Services.AddBlazorWebViewDeveloperTools();

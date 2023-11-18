@@ -1,18 +1,20 @@
 ﻿@page "/"
 @using AttendanceRollApp.WebUI.Models
 @using AttendanceRollApp.WebUI.Services.Interfaces
-@inject IFingerprintService FingerprintService
+@inject INfcService NfcService
 
 <h1>¡Hola!</h1>
 
-Escaneá tu huella para registrar tu asistencia.
+Acerca tu tarjeta NFC para registrar tu asistencia.
 
-@fingerPrint?.Hash
+@(NfcService.IsSupported && NfcService.IsEnabled ?
+ nfcData?.Text ?? "Leyendo..."
+ : "Active NFC")
 
 @code {
-    private FingerprintData? fingerPrint;
+    private NfcData? nfcData;
     protected override async Task OnInitializedAsync()
     {
-        fingerPrint = await FingerprintService.Scan();
+        nfcData = await NfcService.Read();
     }
 }

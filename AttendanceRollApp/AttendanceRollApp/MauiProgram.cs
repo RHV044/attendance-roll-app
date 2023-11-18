@@ -1,6 +1,7 @@
 ﻿using AttendanceRollApp.Services;
 using AttendanceRollApp.WebUI.Services.Interfaces;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.LifecycleEvents;
 
 namespace AttendanceRollApp
 {
@@ -18,10 +19,11 @@ namespace AttendanceRollApp
 
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddTransient<FingerprintService>();
+            builder.Services.AddTransient<INfcService, NfcService>();
 
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
-    		builder.Logging.AddDebug();
+            builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

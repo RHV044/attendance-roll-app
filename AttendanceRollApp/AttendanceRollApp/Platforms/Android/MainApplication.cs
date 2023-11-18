@@ -1,5 +1,7 @@
 ﻿using Android.App;
+using Android.OS;
 using Android.Runtime;
+using Plugin.NFC;
 
 namespace AttendanceRollApp
 {
@@ -12,5 +14,6 @@ namespace AttendanceRollApp
         }
 
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AttendanceRollApp.Services;
 using AttendanceRollApp.WebUI.Services.Interfaces;
 using Microsoft.Extensions.Logging;
+using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.Maui.LifecycleEvents;
 
 namespace AttendanceRollApp
@@ -18,6 +19,7 @@ namespace AttendanceRollApp
                 });
 
             builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddFluentUIComponents();
             builder.Services.AddTransient<FingerprintService>();
             builder.Services.AddTransient<INfcService, NfcService>();
 

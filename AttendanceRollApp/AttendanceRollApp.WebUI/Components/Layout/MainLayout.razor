@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.FluentUI.AspNetCore.Components
+@inherits LayoutComponentBase
 
 <div class="page">
     <div class="sidebar">
@@ -13,5 +14,6 @@
         <article class="content px-4">
             @Body
         </article>
+        <FluentToastProvider MaxToastCount="10" />
     </main>
 </div>

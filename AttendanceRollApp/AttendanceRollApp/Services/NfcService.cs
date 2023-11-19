@@ -15,45 +15,54 @@ namespace AttendanceRollApp.Services
     {
         public NfcService()
         {
-        //    // Event raised when a ndef message is received.
+            //    // Event raised when a ndef message is received.
 
-        //    // Event raised when a ndef message has been published.
-        //    CrossNFC.Current.OnMessagePublished += Current_OnMessagePublished;
-        //    // Event raised when a tag is discovered. Used for publishing.
-        //    CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered;
-        //    // Event raised when NFC listener status changed
-        //    CrossNFC.Current.OnTagListeningStatusChanged += Current_OnTagListeningStatusChanged;
+            //    // Event raised when a ndef message has been published.
+            //    CrossNFC.Current.OnMessagePublished += Current_OnMessagePublished;
+            //    // Event raised when a tag is discovered. Used for publishing.
+            //    CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered;
+            //    // Event raised when NFC listener status changed
+            //    CrossNFC.Current.OnTagListeningStatusChanged += Current_OnTagListeningStatusChanged;
 
-        //    // Android Only:
-        //    // Event raised when NFC state has changed.
-        //    CrossNFC.Current.OnNfcStatusChanged += Current_OnNfcStatusChanged;
+            //    // Android Only:
+            //    // Event raised when NFC state has changed.
+            //    CrossNFC.Current.OnNfcStatusChanged += Current_OnNfcStatusChanged;
 
-        //    // iOS Only: 
-        //    // Event raised when a user cancelled NFC session.
-        //    CrossNFC.Current.OniOSReadingSessionCancelled += Current_OniOSReadingSessionCancelled;
+            //    // iOS Only: 
+            //    // Event raised when a user cancelled NFC session.
+            //    CrossNFC.Current.OniOSReadingSessionCancelled += Current_OniOSReadingSessionCancelled;
         }
         public bool IsSupported => CrossNFC.IsSupported && CrossNFC.Current.IsAvailable;
         public bool IsEnabled => CrossNFC.Current.IsEnabled;
 
         public async Task<NfcData?> Read()
         {
-            SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1);
-            NfcData data = new();
-
-            CrossNFC.Current.OnMessageReceived += (ITagInfo tagInfo) =>
+            SemaphoreSlim semaphoreSlim = new SemaphoreSlim(0);
+            NfcData? info = null;
+            NdefMessageReceivedEventHandler onMessageReceived = (ITagInfo tagInfo) =>
             {
-                data.Text = string.Join(System.Environment.NewLine, tagInfo.Records.Select(x => x.Message));
-                CrossNFC.Current.StopListening();
+                info = new()
+                {
+                    SerialNumber = tagInfo.SerialNumber,
+                    Identifier = BitConverter.ToString(tagInfo.Identifier)
+                };
+
+                if (tagInfo.Records != null && tagInfo.Records.Length > 0)
+                    info.Text = string.Join(Environment.NewLine, tagInfo.Records.Select(x => x.Message));
 
                 semaphoreSlim.Release();
             };
-
+            CrossNFC.Current.OnMessageReceived += onMessageReceived;
 
             CrossNFC.Current.StartListening();
 
             await semaphoreSlim.WaitAsync();
 
-            return data;
+            CrossNFC.Current.StopListening();
+            CrossNFC.Current.OnMessageReceived -= onMessageReceived;
+            semaphoreSlim.Dispose();
+
+            return info;
         }
     }
 }

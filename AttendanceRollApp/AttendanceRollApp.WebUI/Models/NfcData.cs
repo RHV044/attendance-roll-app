@@ -8,6 +8,8 @@ namespace AttendanceRollApp.WebUI.Models
 {
     public class NfcData
     {
-        public string Text { get; set; }
+        public string? SerialNumber { get; set; }
+        public string? Identifier { get; set; }
+        public string? Text { get; set; }
     }
 }

@@ -1,0 +1,28 @@
+﻿@using Microsoft.FluentUI.AspNetCore.Components
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Registro de Asistencias</a>
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <FluentIcon Value="@(new Icons.Filled.Size28.VideoPersonClock())" Color="@Color.Fill" />&ensp; Asistencia
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="people">
+                <FluentIcon Value="@(new Icons.Filled.Size28.PeopleList())" Color="@Color.Fill" />&ensp; Personas
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="config">
+                <FluentIcon Value="@(new Icons.Filled.Size28.TableSettings())" Color="@Color.Fill" />&ensp; Configuración
+            </NavLink>
+        </div>
+    </nav>
+</div>

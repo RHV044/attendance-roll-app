@@ -1,0 +1,63 @@
+﻿@page "/"
+
+@using Microsoft.FluentUI.AspNetCore.Components
+@using AttendanceRollApp.SharedUI.Models
+@using AttendanceRollApp.SharedUI.Services.Interfaces
+
+@inject INfcService NfcService
+@inject IToastService ToastService
+@inject IAttendanceTempRepository AttendanceTempRepository
+@inject IPersonRepository PersonRepository
+
+
+<h1>¡Bienvenid@@!</h1>
+<p>Acercá tu tarjeta SUBE para registrar asistencia.</p>
+
+
+
+
+@{
+    if (!NfcService.IsSupported)
+        ToastService.ShowToast(ToastIntent.Error, "Dispositivo no compatible con NFC", 0);
+    else if (!NfcService.IsEnabled)
+        ToastService.ShowToast(ToastIntent.Warning, "Es necesario activar NFC", 0);
+    else
+        Task.Run(HandleNFCReading);
+
+}
+
+@code {
+    private NfcData? nfcData;
+    private async Task HandleNFCReading()
+    {
+        while (true)
+        {
+
+            nfcData = await NfcService.Read();
+            if (nfcData != null && !string.IsNullOrEmpty(nfcData.SerialNumber))
+            {
+
+                ToastService.ShowToast(ToastIntent.Info, nfcData.SerialNumber);
+                var person = await PersonRepository.GetByNfcSerial(nfcData.SerialNumber);
+
+                if (person != null)
+                {
+                    var now = DateTime.Now;
+                    await AttendanceTempRepository.Add(new()
+                        {
+                            DateTime = now,
+                            Person = person,
+                            AuthMethod = new() { Type = Models.Attendance.AuthenticationMethod.EType.NFC, Value = nfcData.SerialNumber },
+                        });
+
+                }
+                else
+                {
+                    ToastService.ShowToast(ToastIntent.Error, "No hay usuario vinculado a esa SUBE");
+                }
+            }
+
+
+        }
+    }
+}

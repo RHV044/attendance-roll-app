@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AttendanceRollApp.WebUI.Models
+namespace AttendanceRollApp.SharedUI.Services.Interfaces
 {
-    public class FingerprintData
+    public interface IDeviceHardwareService
     {
-        public string? Hash { get; set; }
+        bool IsSupported { get; }
     }
 }

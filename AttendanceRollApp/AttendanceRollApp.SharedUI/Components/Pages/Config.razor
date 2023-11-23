@@ -1,8 +1,10 @@
-﻿@page "/weather"
+﻿@page "/config"
 
-<h1>Weather</h1>
+<h1>Configuración del Formulario de Google</h1>
 
-<p>This component demonstrates showing data.</p>
+<p>Esta aplicación permite registrar las asistencias en una planilla de Google Sheets, esto se hace a traves de un Formulario de Google. 
+    Es necesario crear el formulario de forma pública y configurarlo en esta pantalla.
+    Para eso, ademas de la URL del form, es necesario inspeccionar con F12, ir a la pestaña de 'Network' y obtener los datos del HTTP POST que se realiza al contestar el formulario.</p>
 
 @if (forecasts == null)
 {

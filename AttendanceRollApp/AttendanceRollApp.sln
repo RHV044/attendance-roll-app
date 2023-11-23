@@ -5,7 +5,13 @@ VisualStudioVersion = 17.8.34302.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AttendanceRollApp", "AttendanceRollApp\AttendanceRollApp.csproj", "{7102066D-1B92-46C6-BEF0-7D93B4303446}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceRollApp.WebUI", "AttendanceRollApp.WebUI\AttendanceRollApp.WebUI.csproj", "{1C617F38-DC9B-4AD3-8345-EC1D30CAE616}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MAUI", "MAUI", "{C173C50E-3A55-4506-8CF8-29E852AD009E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AttendanceRollApp.SharedUI", "AttendanceRollApp.SharedUI\AttendanceRollApp.SharedUI.csproj", "{9B62FB2B-A275-41FC-AF90-BF0261A2598D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalDBContext", "AttendanceRollApp.LocalDBContext\LocalDBContext.csproj", "{1896B22F-2482-4BF2-A4CB-7563562D1485}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WEB", "WEB", "{C9A1760E-5FC3-41AB-B379-7986BFAE20FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,13 +25,21 @@ Global
 		{7102066D-1B92-46C6-BEF0-7D93B4303446}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7102066D-1B92-46C6-BEF0-7D93B4303446}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7102066D-1B92-46C6-BEF0-7D93B4303446}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{1C617F38-DC9B-4AD3-8345-EC1D30CAE616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1C617F38-DC9B-4AD3-8345-EC1D30CAE616}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1C617F38-DC9B-4AD3-8345-EC1D30CAE616}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1C617F38-DC9B-4AD3-8345-EC1D30CAE616}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B62FB2B-A275-41FC-AF90-BF0261A2598D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B62FB2B-A275-41FC-AF90-BF0261A2598D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B62FB2B-A275-41FC-AF90-BF0261A2598D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B62FB2B-A275-41FC-AF90-BF0261A2598D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1896B22F-2482-4BF2-A4CB-7563562D1485}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1896B22F-2482-4BF2-A4CB-7563562D1485}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1896B22F-2482-4BF2-A4CB-7563562D1485}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1896B22F-2482-4BF2-A4CB-7563562D1485}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7102066D-1B92-46C6-BEF0-7D93B4303446} = {C173C50E-3A55-4506-8CF8-29E852AD009E}
+		{1896B22F-2482-4BF2-A4CB-7563562D1485} = {C173C50E-3A55-4506-8CF8-29E852AD009E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {85140DF6-3C28-4D1F-B334-F1A2C5B2BFC2}

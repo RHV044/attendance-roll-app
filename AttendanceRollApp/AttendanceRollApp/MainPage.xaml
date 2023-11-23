@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:AttendanceRollApp"
-             xmlns:WebUI="clr-namespace:AttendanceRollApp.WebUI;assembly=AttendanceRollApp.WebUI"
+             xmlns:WebUI="clr-namespace:AttendanceRollApp.SharedUI;assembly=AttendanceRollApp.SharedUI"
              x:Class="AttendanceRollApp.MainPage"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
 

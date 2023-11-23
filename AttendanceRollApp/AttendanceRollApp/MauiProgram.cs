@@ -1,8 +1,9 @@
-﻿using AttendanceRollApp.Services;
-using AttendanceRollApp.WebUI.Services.Interfaces;
+﻿using AttendanceRollApp.LocalDBContext;
+using AttendanceRollApp.Services;
+using AttendanceRollApp.SharedUI.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
-using Microsoft.Maui.LifecycleEvents;
 
 namespace AttendanceRollApp
 {
@@ -20,14 +21,23 @@ namespace AttendanceRollApp
 
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddFluentUIComponents();
-            builder.Services.AddTransient<FingerprintService>();
+
             builder.Services.AddTransient<INfcService, NfcService>();
+
+            builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+            builder.Services.AddScoped<IAttendanceTempRepository, AttendanceTempRepository>();
+
+            builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
+
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
             builder.Logging.AddDebug();
 #endif
 
+            builder.Services.AddDbContext<AttrollDBContext>(
+            options => options.UseSqlite($"Filename={Path.Combine(FileSystem.AppDataDirectory, "attroll.db")}", x => x.MigrationsAssembly(nameof(AttendanceRollApp.LocalDBContext))));
+            
             return builder.Build();
         }
     }

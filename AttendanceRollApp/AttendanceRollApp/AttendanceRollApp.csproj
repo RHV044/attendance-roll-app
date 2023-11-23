@@ -37,6 +37,7 @@
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+        <DefaultLanguage>en</DefaultLanguage>
     </PropertyGroup>
 
     <ItemGroup>
@@ -58,7 +59,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
@@ -67,7 +72,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\AttendanceRollApp.WebUI\AttendanceRollApp.WebUI.csproj" />
+      <ProjectReference Include="..\AttendanceRollApp.LocalDBContext\LocalDBContext.csproj" />
+      <ProjectReference Include="..\AttendanceRollApp.SharedUI\AttendanceRollApp.SharedUI.csproj">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </ProjectReference>
     </ItemGroup>
 
 </Project>

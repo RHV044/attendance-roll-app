@@ -1,5 +1,5 @@
-﻿using AttendanceRollApp.WebUI.Models;
-using AttendanceRollApp.WebUI.Services.Interfaces;
+﻿using AttendanceRollApp.SharedUI.Models;
+using AttendanceRollApp.SharedUI.Services.Interfaces;
 using Plugin.Fingerprint;
 using Plugin.Fingerprint.Abstractions;
 using System;

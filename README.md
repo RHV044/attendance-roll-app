@@ -10,6 +10,11 @@ Este PoC se puede utilizar como proyecto base o template ya que tiene:
     Maneja que el dispositivo no tenga compatibilidad
 - FluentUI-blazor.net implementado para interfaces. (Lo peor del PoC, es horrible y poco responsive. Sugiero utilizar Bootstrap plano o MudBlazor)
 
-
+En este PoC no se puede:
+- Editar data de las personas
+- Sincronizar personas al servidor, solo existen local. (Solo se envian al gsheet las asistencias que incluyen la informacion de las personas)
+- Configurar el formulario o el gsheet, esto esta hardcodeado.
+- Aun no se pudo ejecutar en WearOS como me hubiera gustado
+- La tabla de personas de fluentui es muy mala y no se ve nada en celular
 
 Los datos de asistencias se sincronizan a este GSheets: https://docs.google.com/spreadsheets/d/1zO5lYvFMMEHhruPZDpr1FW5rA5UWIa9Hsxr88ffav6M

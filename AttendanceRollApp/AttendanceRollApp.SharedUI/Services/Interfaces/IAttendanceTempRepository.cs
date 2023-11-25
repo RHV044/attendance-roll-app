@@ -14,10 +14,14 @@ namespace AttendanceRollApp.SharedUI.Services.Interfaces
         {
             if (attendance == null) return false;
 
-            var GFormsService = new GoogleFormsSubmissionService(AttendanceGForm.FormUrl);
+            try
+            {
 
 
-            var fields = new Dictionary<string, string>
+                var GFormsService = new GoogleFormsSubmissionService(AttendanceGForm.FormUrl);
+
+
+                var fields = new Dictionary<string, string>
                     {
                        { AttendanceGForm.Fields.Year, attendance.DateTime.Year.ToString() },
                        { AttendanceGForm.Fields.Month, attendance.DateTime.Month.ToString() },
@@ -29,14 +33,21 @@ namespace AttendanceRollApp.SharedUI.Services.Interfaces
                        { AttendanceGForm.Fields.Gender, attendance.Person.Gender.ToString() },
                        { AttendanceGForm.Fields.NationalID, attendance.Person.NationalID },
                        { AttendanceGForm.Fields.FullName, $"{attendance.Person.FirstName} {attendance.Person.LastName}" },
-                       { AttendanceGForm.Fields.Birthdate, attendance.Person.BirthDate.ToString("yyyy-MM-dd") },
+                       { AttendanceGForm.Fields.BirthYear, attendance.Person.BirthDate.Year.ToString() },
+                       { AttendanceGForm.Fields.BirthMonth, attendance.Person.BirthDate.Month.ToString() },
+                       { AttendanceGForm.Fields.BirthDay, attendance.Person.BirthDate.Day.ToString() },
                     };
 
-            GFormsService.SetFieldValues(fields);
+                GFormsService.SetFieldValues(fields);
 
-            var response = await GFormsService.SubmitAsync();
+                var response = await GFormsService.SubmitAsync();
 
-            return response.IsSuccessStatusCode;
+                return response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
     }

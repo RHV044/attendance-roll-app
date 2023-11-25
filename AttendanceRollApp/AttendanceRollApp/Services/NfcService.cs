@@ -1,20 +1,28 @@
 ﻿using AttendanceRollApp.SharedUI.Models;
 using AttendanceRollApp.SharedUI.Services.Interfaces;
-using Plugin.Fingerprint;
-using Plugin.Fingerprint.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Plugin.NFC;
 
 namespace AttendanceRollApp.Services
 {
     public class NfcService : INfcService
     {
+        private SemaphoreSlim semaphoreSlim = new SemaphoreSlim(0);
+        private NfcData? info = null;
         public NfcService()
         {
+            CrossNFC.Current.OnMessageReceived += (ITagInfo tagInfo) =>
+            {
+                info = new()
+                {
+                    SerialNumber = tagInfo.SerialNumber,
+                    Identifier = BitConverter.ToString(tagInfo.Identifier)
+                };
+
+                if (tagInfo.Records != null && tagInfo.Records.Length > 0)
+                    info.Text = string.Join(Environment.NewLine, tagInfo.Records.Select(x => x.Message));
+
+                semaphoreSlim.Release();
+            };
             //    // Event raised when a ndef message is received.
 
             //    // Event raised when a ndef message has been published.
@@ -37,32 +45,17 @@ namespace AttendanceRollApp.Services
 
         public async Task<NfcData?> Read()
         {
-            SemaphoreSlim semaphoreSlim = new SemaphoreSlim(0);
-            NfcData? info = null;
-            NdefMessageReceivedEventHandler onMessageReceived = (ITagInfo tagInfo) =>
-            {
-                info = new()
-                {
-                    SerialNumber = tagInfo.SerialNumber,
-                    Identifier = BitConverter.ToString(tagInfo.Identifier)
-                };
-
-                if (tagInfo.Records != null && tagInfo.Records.Length > 0)
-                    info.Text = string.Join(Environment.NewLine, tagInfo.Records.Select(x => x.Message));
-
-                semaphoreSlim.Release();
-            };
-            CrossNFC.Current.OnMessageReceived += onMessageReceived;
-
             CrossNFC.Current.StartListening();
-
             await semaphoreSlim.WaitAsync();
-
             CrossNFC.Current.StopListening();
-            CrossNFC.Current.OnMessageReceived -= onMessageReceived;
-            semaphoreSlim.Dispose();
 
             return info;
+        }
+
+        public void StopReading()
+        {
+            info = null;
+            semaphoreSlim.Release();
         }
     }
 }

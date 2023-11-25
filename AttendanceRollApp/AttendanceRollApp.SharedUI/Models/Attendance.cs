@@ -3,10 +3,8 @@ using AttendanceRollApp.SharedUI.Models.Interfaces;
 
 namespace AttendanceRollApp.SharedUI.Models
 {
-    public class Attendance : ISynchronizableToServer
+    public class Attendance : Entity, ISynchronizableToServer
     {
-        [Key]
-        public int dbId { get; set; }
         public required DateTime DateTime { get; set; }
         public required Person Person { get; set; }
         public required AuthenticationMethod AuthMethod { get; set; }
@@ -15,10 +13,8 @@ namespace AttendanceRollApp.SharedUI.Models
         public DateTime? LastTimeSynced { get; set; }
         public bool IsSynced { get; set; }
 
-        public class AuthenticationMethod
+        public class AuthenticationMethod : Entity
         {
-            [Key]
-            public int dbId { get; set; }
             public required EType Type { get; set; }
             public required string Value { get; set; }
 

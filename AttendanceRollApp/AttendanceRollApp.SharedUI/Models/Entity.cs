@@ -1,9 +1,17 @@
-﻿namespace AttendanceRollApp.SharedUI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AttendanceRollApp.SharedUI.Models
 {
-    public class Entity
+    public abstract class Entity
     {
+        public Entity()
+        {
+            LastUpdatedDate = CreatedDate = DateTime.Now;
+        }
+        [Key]
+        public int? Id { get; set; }
         public bool IsDeleted { get; set; } = false;
-        public required DateTime CreatedDate { get; set; }
-        public required DateTime LastUpdatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime LastUpdatedDate { get; set; }
     }
 }

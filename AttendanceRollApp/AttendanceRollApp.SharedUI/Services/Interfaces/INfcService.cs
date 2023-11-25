@@ -11,5 +11,6 @@ namespace AttendanceRollApp.SharedUI.Services.Interfaces
     {
         bool IsEnabled { get; }
         Task<NfcData?> Read();
+        void StopReading();
     }
 }

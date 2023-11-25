@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace AttendanceRollApp.LocalDBContext.Migrations
+namespace LocalDBContext.Migrations
 {
     [DbContext(typeof(AttrollDBContext))]
     partial class AttrollDBContextModelSnapshot : ModelSnapshot
@@ -19,20 +19,29 @@ namespace AttendanceRollApp.LocalDBContext.Migrations
 
             modelBuilder.Entity("AttendanceRollApp.SharedUI.Models.Attendance", b =>
                 {
-                    b.Property<int>("dbId")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AuthMethoddbId")
+                    b.Property<int>("AuthMethodId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsSynced")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("LastTimeSynced")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("LastUpdatedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<decimal?>("Latitude")
@@ -41,24 +50,32 @@ namespace AttendanceRollApp.LocalDBContext.Migrations
                     b.Property<decimal?>("Longitude")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PersonNationalID")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("PersonId")
+                        .HasColumnType("INTEGER");
 
-                    b.HasKey("dbId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("AuthMethoddbId");
+                    b.HasIndex("AuthMethodId");
 
-                    b.HasIndex("PersonNationalID");
+                    b.HasIndex("PersonId");
 
                     b.ToTable("Attendances");
                 });
 
             modelBuilder.Entity("AttendanceRollApp.SharedUI.Models.Attendance+AuthenticationMethod", b =>
                 {
-                    b.Property<int>("dbId")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastUpdatedDate")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
@@ -67,20 +84,25 @@ namespace AttendanceRollApp.LocalDBContext.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("dbId");
+                    b.HasKey("Id");
 
                     b.ToTable("AuthenticationMethod");
                 });
 
             modelBuilder.Entity("AttendanceRollApp.SharedUI.Models.Person", b =>
                 {
-                    b.Property<string>("NationalID")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateOnly>("BirthDate")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FirstName")
@@ -100,11 +122,15 @@ namespace AttendanceRollApp.LocalDBContext.Migrations
                     b.Property<DateTime>("LastUpdatedDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("NationalID")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("NfcSerialNumbers")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("NationalID");
+                    b.HasKey("Id");
 
                     b.ToTable("Person");
                 });
@@ -113,13 +139,13 @@ namespace AttendanceRollApp.LocalDBContext.Migrations
                 {
                     b.HasOne("AttendanceRollApp.SharedUI.Models.Attendance+AuthenticationMethod", "AuthMethod")
                         .WithMany()
-                        .HasForeignKey("AuthMethoddbId")
+                        .HasForeignKey("AuthMethodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AttendanceRollApp.SharedUI.Models.Person", "Person")
                         .WithMany()
-                        .HasForeignKey("PersonNationalID")
+                        .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

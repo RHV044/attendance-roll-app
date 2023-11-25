@@ -22,11 +22,11 @@ namespace AttendanceRollApp
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddFluentUIComponents();
 
-            builder.Services.AddTransient<INfcService, NfcService>();
 
             builder.Services.AddScoped<IPersonRepository, PersonRepository>();
             builder.Services.AddScoped<IAttendanceTempRepository, AttendanceTempRepository>();
 
+            builder.Services.AddSingleton<INfcService, NfcService>();
             builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
 
 

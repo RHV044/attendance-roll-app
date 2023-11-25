@@ -1,0 +1,149 @@
+﻿@page "/people/new"
+@using Microsoft.FluentUI.AspNetCore.Components
+@using AttendanceRollApp.SharedUI.Models
+@using static AttendanceRollApp.SharedUI.Models.Person
+@implements IDialogContentComponent<Person>
+@implements IDisposable;
+@inject INfcService NfcService
+@inject IToastService ToastService
+@inject IPersonRepository PersonRepository
+
+<FluentDialogHeader ShowDismiss="true">
+    <FluentStack VerticalAlignment="VerticalAlignment.Center">
+        <FluentIcon Value="@(new Icons.Regular.Size24.PersonAdd())" />
+        <FluentLabel Typo="Typography.PaneHeader">
+            Nueva Persona
+        </FluentLabel>
+    </FluentStack>
+</FluentDialogHeader>
+
+
+<FluentDialogFooter>
+    <FluentButton Disabled=@(!IsValid(newPersonData)) IconStart="new Icons.Regular.Size20.PersonAdd()" Appearance="Appearance.Accent" OnClick="@SaveAsync">Agregar</FluentButton>
+</FluentDialogFooter>
+
+@* Body *@
+<FluentDialogBody>
+    <FluentGrid Spacing="2" Justify="JustifyContent.FlexStart">
+        <FluentGridItem xs="12" sm="6">
+            <FluentTextField Style="width:100%;" @bind-Value=newPersonData.FirstName Required="true">
+                <FluentIcon Value="@(new Icons.Regular.Size16.Text())" Slot="start" Color="Color.Neutral" /> Nombre
+            </FluentTextField>
+        </FluentGridItem>
+        <FluentGridItem xs="12" sm="6">
+            <FluentTextField Style="width:100%;" @bind-Value=newPersonData.LastName Required="true">
+                <FluentIcon Value="@(new Icons.Regular.Size16.Text())" Slot="start" Color="Color.Neutral" /> Apellido
+            </FluentTextField>
+        </FluentGridItem>
+        <FluentGridItem xs="12" sm="6">
+            <FluentTextField Style="width:100%;" Class="form-field" @bind-Value=newPersonData.NationalID Required="true">
+                <FluentIcon Value="@(new Icons.Regular.Size16.ScanPerson())" Slot="start" Color="Color.Neutral" /> DNI
+            </FluentTextField>
+        </FluentGridItem>
+        <FluentGridItem xs="12" sm="6">
+            <FluentSelect Style="width:100%; min-width: unset;" Items=@(Enum.GetValues<EGender>())
+                          OptionValue="@(c => c.ToAttributeValue())"
+                          OptionText="@(c => c.ToFriendlyString())"
+                          TOption="EGender"
+                          Position="SelectPosition.Below"
+                          Label="Género"
+                          @bind-SelectedOption="@newPersonData.Gender" />
+
+        </FluentGridItem>
+        <FluentGridItem xs="12" sm="6">
+            <FluentDatePicker Style="width:100%;" Label="Fecha de Nacimiento" @bind-Value=auxBirthDate Required="true">
+                <FluentIcon Value="@(new Icons.Regular.Size16.ScanPerson())" Slot="start" Color="Color.Neutral" />
+            </FluentDatePicker>
+        </FluentGridItem>
+        <FluentGridItem xs="12" sm="6">
+            <FluentTextField Style="width:100%;" @bind-Value=newPersonData.Email TextFieldType="TextFieldType.Email" Spellcheck="true" Required="true">
+                <FluentIcon Value="@(new Icons.Regular.Size16.Mail())" Slot="start" Color="Color.Neutral" /> Email
+            </FluentTextField>
+        </FluentGridItem>
+        <FluentGridItem xs="12" xl="12">
+            @if (newPersonData.NfcSerialNumbers is not null && newPersonData.NfcSerialNumbers.Count > 0)
+            {
+                <FluentTabs ShowClose="false"
+                            Size="TabSize.Large">
+
+
+                    @foreach (var item in newPersonData.NfcSerialNumbers)
+                    {
+                        var serialNumber = item;
+                        <FluentTab Id="@($"tab-{serialNumber}")"
+                                   LabelEditable="false"
+                                   Label="@($"Tarjeta SUBE ({serialNumber})")"
+                                   Data="@serialNumber">
+                        </FluentTab>
+                    }
+                </FluentTabs>
+            }
+            else
+            {
+                <p>No hay ninguna tarjeta SUBE vinculada a esta persona. Acerque una tarjeta al lector NFC para agregarla.</p>
+            }
+
+
+        </FluentGridItem>
+    </FluentGrid>
+
+</FluentDialogBody>
+
+@code
+{
+    private Person newPersonData = new();
+    [Parameter]
+    public Person Content { get; set; } = default!;
+
+    [CascadingParameter]
+    public FluentDialog Dialog { get; set; } = default!;
+
+    DateTime? auxBirthDate = default!;
+    JustifyContent Justification = JustifyContent.FlexStart;
+
+    private bool IsValid(Person personData)
+    {
+        return personData.Email != null && personData.BirthDate != null && personData.FirstName != null && personData.LastName != null && personData.Gender != null && personData.NationalID != null && personData.NfcSerialNumbers?.Count > 0;
+    }
+
+    private async Task SaveAsync()
+    {
+        if (auxBirthDate.HasValue)
+            newPersonData.BirthDate = DateOnly.FromDateTime(auxBirthDate.Value);
+
+
+        await PersonRepository.AddOrUpdate(newPersonData);
+        await Dialog.CloseAsync(newPersonData);
+    }
+
+    private NfcData? nfcData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (NfcService.IsSupported && NfcService.IsEnabled)
+        {
+            bool validNFCAdded = false;
+            while (!validNFCAdded)
+            {
+                nfcData = await NfcService.Read();
+                if (nfcData != null && !string.IsNullOrEmpty(nfcData.SerialNumber))
+                {
+                    var nfcInUseBy = (await PersonRepository.GetByNfcSerial(nfcData.SerialNumber));
+                    if (nfcInUseBy == null)
+                    {
+                        newPersonData.NfcSerialNumbers.Add(nfcData.SerialNumber);
+                        validNFCAdded = true;
+                        StateHasChanged();
+                    }
+                    else
+                        ToastService.ShowToast(ToastIntent.Warning, "Tarjeta SUBE ya vinculada a otra persona.");
+                }
+            }
+        }
+    }
+    void IDisposable.Dispose()
+    {
+        NfcService.StopReading();
+    }
+
+}

@@ -2,7 +2,8 @@
 @using Microsoft.FluentUI.AspNetCore.Components
 @inject NavigationManager NavigationManager;
 @inject IPersonRepository PersonRepository;
-
+@inject IDialogService DialogService
+@inject IToastService ToastService
 
 <h1>Personas registradas</h1>
 <p>Esta es la lista de personas que pueden registrar su asistencia con su tarjeta SUBE</p>
@@ -32,21 +33,47 @@ else
 
 <FluentButton IconStart="@(new Icons.Regular.Size20.Person())"
               Appearance="Appearance.Accent"
-              OnClick="agregarPersona">
+              OnClick="AddPersonDialog">
     Agregar Persona
 </FluentButton>
-
 
 @code {
     private IQueryable<Person>? people = null;
 
     protected override async Task OnInitializedAsync()
     {
-        people = ((await PersonRepository.GetMany()) ?? new Person[] { }).AsQueryable();
+        people = await getPeople();
     }
 
-    private async Task agregarPersona()
+    private async Task<IQueryable<Person>> getPeople()
     {
+        return ((await PersonRepository.GetMany()) ?? new Person[] { }).AsQueryable();
+    }
+    private async Task AddPersonDialog()
+    {
+        DialogParameters parameters = new()
+            {
+                PrimaryActionEnabled = true,
+                Width = "500px",
+                TrapFocus = true,
+                Modal = false,
+                PreventScroll = true,
+                Title = "",
+                PrimaryAction = "",
+                SecondaryAction = "",
+            };
+
+        IDialogReference dialog = await DialogService.ShowDialogAsync<AddPerson>(new Person(), parameters);
+        DialogResult? result = await dialog.Result;
+
+
+        if (result.Data is not null)
+        {
+            people = null;
+            people = await getPeople();
+            var addedPerson = result.Data as Person;
+            ToastService.ShowToast(ToastIntent.Success, $"{addedPerson?.FirstName} ha sido agregado");
+        }
 
     }
 }

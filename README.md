@@ -10,3 +10,6 @@ Este PoC se puede utilizar como proyecto base o template ya que tiene:
     Maneja que el dispositivo no tenga compatibilidad
 - FluentUI-blazor.net implementado para interfaces. (Lo peor del PoC, es horrible y poco responsive)
 
+
+
+Los datos de asistencias se sincronizan a este GSheets: https://docs.google.com/spreadsheets/d/1zO5lYvFMMEHhruPZDpr1FW5rA5UWIa9Hsxr88ffav6M

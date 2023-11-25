@@ -14,7 +14,16 @@
 
 
 <h1>¡Bienvenid@@!</h1>
-<p>Acercá tu tarjeta SUBE para registrar asistencia.</p>
+@if (NfcService.IsSupported)
+{
+    <p>Acercá tu tarjeta SUBE para registrar asistencia.</p>
+}
+else
+{
+    <p>Dispositivo no compatible con NFC.</p>
+}
+
+
 
 
 @code {
@@ -23,9 +32,9 @@
     protected override async Task OnInitializedAsync()
     {
         if (!NfcService.IsSupported)
-            ToastService.ShowToast(ToastIntent.Error, "Dispositivo no compatible con NFC", 0);
+            Task.Run(() => ToastService.ShowToast(ToastIntent.Error, "Dispositivo no compatible con NFC", 0));
         else if (!NfcService.IsEnabled)
-            ToastService.ShowToast(ToastIntent.Warning, "Es necesario activar NFC", 0);
+            Task.Run(() => ToastService.ShowToast(ToastIntent.Warning, "Es necesario activar NFC", 0));
         else
             while (componentIsActive)
             {

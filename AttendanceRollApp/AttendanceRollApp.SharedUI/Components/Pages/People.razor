@@ -14,23 +14,26 @@
 }
 else
 {
-    <FluentDataGrid Items="@people">
-        <ChildContent>
-            <PropertyColumn Property="@(p => p.NationalID)" Title="DNI" Sortable="true" />
-            <PropertyColumn Property="@(p => $"{p.FirstName} {p.LastName}")" Title="Nombre" Sortable="true" />
-            <PropertyColumn Property="@(p => p.Gender)" Title="Género" Sortable="true" />
-            <PropertyColumn Property="@(p => p.BirthDate)" Title="Fecha nacimiento" Format="yyyy-MM-dd" Sortable="true" />
-            <PropertyColumn Property="@(p => p.NfcSerialNumbers)" Title="Tarjetas SUBE" Sortable="true" />
-            <PropertyColumn Property="@(p => p.CreatedDate)" Title="Fecha creación" Format="yyyy-MM-dd HH:mm" Sortable="true" />
-            <PropertyColumn Property="@(p => p.LastUpdatedDate)" Title="Fecha última modificación" Format="yyyy-MM-dd HH:mm" Sortable="true" />
-        </ChildContent>
-        <EmptyContent>
-            <FluentIcon Value="@(new Icons.Filled.Size24.Search())" Color="@Color.Accent" />
-            &nbsp; No encontramos a nadie
-        </EmptyContent>
-    </FluentDataGrid>
+    <div id="PeopleGridContainer">
+        <FluentDataGrid Items="@people">
+            <ChildContent>
+                <PropertyColumn Property="@(p => p.NationalID)" Title="DNI" Sortable="true" />
+                <PropertyColumn Property="@(p => $"{p.FirstName} {p.LastName}")" Title="Nombre" Sortable="true" />
+                <PropertyColumn Class="hideInMobile" Property="@(p => p.Gender)" Title="Género" Sortable="true" />
+                <PropertyColumn Class="hideInMobile" Property="@(p => p.BirthDate)" Title="Fecha nacimiento" Format="yyyy-MM-dd" Sortable="true" />
+                <PropertyColumn Property="@(p => String.Join(", ",p.NfcSerialNumbers))" Title="Tarjetas SUBE" Sortable="true" />
+                <PropertyColumn Class="hideInMobile" Property="@(p => p.CreatedDate)" Title="Fecha creación" Format="yyyy-MM-dd HH:mm" Sortable="true" />
+                <PropertyColumn Class="hideInMobile" Property="@(p => p.LastUpdatedDate)" Title="Fecha última modificación" Format="yyyy-MM-dd HH:mm" Sortable="true" />
+            </ChildContent>
+            <EmptyContent>
+                <FluentIcon Value="@(new Icons.Filled.Size24.Search())" Color="@Color.Accent" />
+                &nbsp; No encontramos a nadie
+            </EmptyContent>
+        </FluentDataGrid>
+    </div>
 }
 
+<br />
 <FluentButton IconStart="@(new Icons.Regular.Size20.Person())"
               Appearance="Appearance.Accent"
               OnClick="AddPersonDialog">

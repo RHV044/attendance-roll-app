@@ -10,19 +10,20 @@ namespace AttendanceRollApp.Services
         private NfcData? info = null;
         public NfcService()
         {
-            CrossNFC.Current.OnMessageReceived += (ITagInfo tagInfo) =>
-            {
-                info = new()
+            if (this.IsSupported && this.IsEnabled)
+                CrossNFC.Current.OnMessageReceived += (ITagInfo tagInfo) =>
                 {
-                    SerialNumber = tagInfo.SerialNumber,
-                    Identifier = BitConverter.ToString(tagInfo.Identifier)
+                    info = new()
+                    {
+                        SerialNumber = tagInfo.SerialNumber,
+                        Identifier = BitConverter.ToString(tagInfo.Identifier)
+                    };
+
+                    if (tagInfo.Records != null && tagInfo.Records.Length > 0)
+                        info.Text = string.Join(Environment.NewLine, tagInfo.Records.Select(x => x.Message));
+
+                    semaphoreSlim.Release();
                 };
-
-                if (tagInfo.Records != null && tagInfo.Records.Length > 0)
-                    info.Text = string.Join(Environment.NewLine, tagInfo.Records.Select(x => x.Message));
-
-                semaphoreSlim.Release();
-            };
             //    // Event raised when a ndef message is received.
 
             //    // Event raised when a ndef message has been published.

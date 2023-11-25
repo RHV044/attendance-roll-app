@@ -117,13 +117,13 @@
     }
 
     private NfcData? nfcData;
+    private bool stopReading = false;
 
     protected override async Task OnInitializedAsync()
     {
         if (NfcService.IsSupported && NfcService.IsEnabled)
         {
-            bool validNFCAdded = false;
-            while (!validNFCAdded)
+            while (!stopReading)
             {
                 nfcData = await NfcService.Read();
                 if (nfcData != null && !string.IsNullOrEmpty(nfcData.SerialNumber))
@@ -132,7 +132,7 @@
                     if (nfcInUseBy == null)
                     {
                         newPersonData.NfcSerialNumbers.Add(nfcData.SerialNumber);
-                        validNFCAdded = true;
+                        stopReading = true;
                         StateHasChanged();
                     }
                     else
@@ -143,6 +143,7 @@
     }
     void IDisposable.Dispose()
     {
+        stopReading = true;
         NfcService.StopReading();
     }
 

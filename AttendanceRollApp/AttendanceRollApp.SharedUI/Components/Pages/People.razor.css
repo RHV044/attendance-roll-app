@@ -1,1 +1,9 @@
 ﻿
+
+#PeopleGridContainer {
+    overflow-x: auto;
+}
+
+    #PeopleGridContainer > ::deep fluent-data-grid {
+        min-width: 700px;
+    }

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
 
+
 namespace AttendanceRollApp
 {
     public static class MauiProgram
@@ -23,6 +24,7 @@ namespace AttendanceRollApp
             builder.Services.AddFluentUIComponents();
 
 
+
             builder.Services.AddScoped<IPersonRepository, PersonRepository>();
             builder.Services.AddScoped<IAttendanceTempRepository, AttendanceTempRepository>();
 
@@ -37,7 +39,7 @@ namespace AttendanceRollApp
 
             builder.Services.AddDbContext<AttrollDBContext>(
             options => options.UseSqlite($"Filename={Path.Combine(FileSystem.AppDataDirectory, "attroll.db")}", x => x.MigrationsAssembly(nameof(AttendanceRollApp.LocalDBContext))));
-            
+
             return builder.Build();
         }
     }

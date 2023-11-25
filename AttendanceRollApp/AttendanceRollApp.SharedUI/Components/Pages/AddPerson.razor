@@ -61,6 +61,7 @@
             </FluentTextField>
         </FluentGridItem>
         <FluentGridItem xs="12" xl="12">
+            <FluentInputLabel Label="Tarjeta SUBE"></FluentInputLabel>
             @if (newPersonData.NfcSerialNumbers is not null && newPersonData.NfcSerialNumbers.Count > 0)
             {
                 <FluentTabs ShowClose="false"
@@ -80,7 +81,9 @@
             }
             else
             {
-                <p>No hay ninguna tarjeta SUBE vinculada a esta persona. Acerque una tarjeta al lector NFC para agregarla.</p>
+                <FluentTextField Disabled=true Appearance="FluentInputAppearance.Outline" Placeholder="Acerque una tarjeta al lector NFC" Style="width:100%; background-color:white; min-height:50px;">
+                    <FluentIcon Value="@(new Icons.Regular.Size32.ContactCard())" Slot="start" Color="Color.Neutral" />
+                </FluentTextField>
             }
 
 

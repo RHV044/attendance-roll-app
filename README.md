@@ -9,6 +9,7 @@ Este PoC se puede utilizar como proyecto base o template ya que tiene:
 - Uso de hardware nativo (Lector NFC)
     Maneja que el dispositivo no tenga compatibilidad
 - FluentUI-blazor.net implementado para interfaces. (Lo peor del PoC, es horrible y poco responsive. Sugiero utilizar Bootstrap plano o MudBlazor)
+- Utiliza bien el keyboard en android para que no overlapee con los inputs.
 
 En este PoC no se puede:
 - Editar data de las personas

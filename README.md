@@ -8,7 +8,7 @@ Este PoC se puede utilizar como proyecto base o template ya que tiene:
      Para esto la SharedUI usa solo interfaces de los servicios. En MAUI estan las implementaciones, en Blazor WEB tendria otras implementaciones
 - Uso de hardware nativo (Lector NFC)
     Maneja que el dispositivo no tenga compatibilidad
-- FluentUI-blazor.net implementado para interfaces. (Lo peor del PoC, es horrible y poco responsive)
+- FluentUI-blazor.net implementado para interfaces. (Lo peor del PoC, es horrible y poco responsive. Sugiero utilizar Bootstrap plano o MudBlazor)
 
 
 

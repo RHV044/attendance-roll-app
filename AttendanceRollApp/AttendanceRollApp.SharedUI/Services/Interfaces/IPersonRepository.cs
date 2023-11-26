@@ -14,6 +14,7 @@ namespace AttendanceRollApp.SharedUI.Services.Interfaces
         Task<Person?> GetByNfcSerial(string NfcSerialNumber);
         Task<IEnumerable<Person>?> GetMany(Filters? filters = null);
         Task AddOrUpdate(Person person);
+        Task Delete(Person person);
 
         public class Filters
         {

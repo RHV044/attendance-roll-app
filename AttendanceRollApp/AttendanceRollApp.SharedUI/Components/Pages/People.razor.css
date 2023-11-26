@@ -5,5 +5,23 @@
 }
 
     #PeopleGridContainer > ::deep fluent-data-grid {
-        min-width: 700px;
+        min-width: 800px;
     }
+
+@keyframes append-person {
+    from {
+        transform: scaleY(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+}
+
+::deep .grid-person {
+    animation: append-person .3s linear;
+    overflow-x: auto;
+    text-overflow: clip;
+}

@@ -14,6 +14,12 @@ namespace AttendanceRollApp.Services
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task Delete(Person person)
+        {
+            dbContext.Remove(person);
+            await dbContext.SaveChangesAsync();
+        }
+
         public async Task<Person?> GetById(string nationalId) =>
             await dbPerson.SingleOrDefaultAsync(x => x.NationalID == nationalId);
 
